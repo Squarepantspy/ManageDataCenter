@@ -4,8 +4,6 @@ import { Link, useParams } from 'react-router-dom'
 import {io} from 'socket.io-client';
 import axios from 'axios';
 import rack from '../static/img/rack-removebg-preview.png'
-import data_center from '../static/img/data-center.png'
-import Button from './Button';
 import Logout from './Logout';
 import Sinpermiso from './Sinpermiso';
 const socket = io(':8000')

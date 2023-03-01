@@ -1,6 +1,6 @@
 import React,{useEffect,useState} from 'react'
 import serverimg from "../static/img/servers.jpg"
-import {useParams, useNavigate} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import axios from 'axios'
 import BorrarRol from './BorrarRol';
 import Button from './Button';

@@ -55,7 +55,7 @@ const handleSubmit = (e)=>{
                <label htmlFor="username" className="form-label">Username :</label>
                <input type="text" id='username' className="form-control" onChange={e=>setUsername(e.target.value)} value={username}/>
                {valerror.username ? <span className='text-danger'> {valerror.username.message}</span> : null }<br></br>
-               {duperror.username ? <span className='text-danger'> {"Este email ya Existe"}</span> : null }
+               {duperror.username ? <span className='text-danger'> {"Este usuario ya Existe"}</span> : null }
                </div>
                <div className="mb-3">
                <label htmlFor="accesscode" className="form-label">Codigo de acceso :</label>

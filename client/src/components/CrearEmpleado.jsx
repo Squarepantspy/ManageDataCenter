@@ -4,13 +4,13 @@ import FormEmpleado from './FormEmpleado'
 import axios from 'axios'
 import { useParams } from 'react-router-dom'
 import { useNavigate } from 'react-router-dom'
+import Button from './Button'
 const CrearEmpleado = () => {
 const navigate = useNavigate();
 const {id}= useParams();
 const [errors, setErrors]=useState({})
 const [duperror,setduperror]=useState({
-    firstName : false,
-    lastName : false
+    username : false
 })
 const [regExito, setregExito]=useState(null);
 const empty= {
@@ -22,7 +22,7 @@ const empty= {
     likes : 0
 }
 const onNewEmpleado = (empleado)=>{
-    console.log(empleado)
+    console.log("On new empleado")
     axios.post(`http://localhost:8000/api/${id}/newEmployee`,
         {firstName : empleado.firstName,
          lastName : empleado.lastName,
@@ -61,6 +61,7 @@ const onNewEmpleado = (empleado)=>{
         <img src={serverimg} className= "logo" alt="esta es la imagen" />
         <h2>Protect Data Center</h2>
         </div>
+        <Button ruta={`empresa/${id}/main`} texto="Home"/>
         </div>
         <div className="container  mt-4 py-4">
         <h3 className='text-center mb-4'>Registrar empleado</h3>

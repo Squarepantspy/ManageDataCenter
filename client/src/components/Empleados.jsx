@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useParams, Link } from 'react-router-dom'
 import axios from 'axios';
 import serverimg from '../static/img/servers.jpg'
-import Button from './Button';
 import Logout from './Logout';
 import Sinpermiso from './Sinpermiso';
 const Empleados = () => {

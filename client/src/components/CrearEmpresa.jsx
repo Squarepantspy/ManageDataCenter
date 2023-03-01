@@ -1,9 +1,10 @@
 import React, {useState} from 'react'
 import FormEmpresa from './FormEmpresa'
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const CrearEmpresa = () => {
-
+const navigate = useNavigate();
 const [errors, setErrors]=useState({})
 const [duperror,setduperror]=useState({
     name : false,
@@ -48,8 +49,8 @@ const onNewEmpresa = (empresa)=>{
         })
         setregExito(true)
         console.log(res)
-        //navegar a login empresa y pasar id
-
+        //navegar a login empresa
+        navigate(`/empresa/login`)
     })
     .catch(err=>{
         setregExito(false)

@@ -1,23 +1,24 @@
 import React,{useEffect, useState} from 'react'
-import Button from './Button'
 import serverimg from "../static/img/servers.jpg"
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Logout from './Logout';
 import Sinpermiso from './Sinpermiso';
+import Noexiste from './Noexiste';
 const MainEmpleado = () => {
 const {id}= useParams();
 const [roles,setRoles]=useState([]);
 const [empleado, setEmpleado]=useState("")
 const [autorizacion,setAutorizacion]=useState(false)
-
 useEffect(()=>{
   if(empleado===""){
   axios.get(`http://localhost:8000/api/empleado/${id}`,{withCredentials: true})
   .then((res)=>{
-      console.log(res)
+      console.log(res.data.message.name)
+      
       setEmpleado(res.data)
       setAutorizacion(true)
+    
     
   }).catch((err)=>{
     if (err.response.status===401){
@@ -48,7 +49,9 @@ const handleCheck = (e,rol,indexx)=>{
   .catch(err=>{console.log(err)})
 }
 
-  return ( <>{(autorizacion)?<>
+  return ( 
+  <>
+  {(autorizacion)?<>
     {(empleado!=="")?<>
     <div className='navbar-home fourth-color'>
         <div className="d-flex flex-row">
@@ -58,7 +61,7 @@ const handleCheck = (e,rol,indexx)=>{
         <nav className="navbar navbar-expand-lg w-100 navegacion mt-3">
          
           <div className="container-fluid">
-            <h2 className='mx-3'>{empleado.createdBy.name}</h2>
+            <h2 className='mx-3'>{(empleado==="")?"": empleado.createdBy.name}</h2>
             <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
               <span className="navbar-toggler-icon"></span>
             </button>

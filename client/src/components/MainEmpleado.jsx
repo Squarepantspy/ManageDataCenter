@@ -4,10 +4,12 @@ import serverimg from "../static/img/servers.jpg"
 import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Logout from './Logout';
+import Sinpermiso from './Sinpermiso';
 const MainEmpleado = () => {
 const {id}= useParams();
 const [roles,setRoles]=useState([]);
 const [empleado, setEmpleado]=useState("")
+const [autorizacion,setAutorizacion]=useState(false)
 
 useEffect(()=>{
   if(empleado===""){
@@ -15,17 +17,25 @@ useEffect(()=>{
   .then((res)=>{
       console.log(res)
       setEmpleado(res.data)
+      setAutorizacion(true)
     
   }).catch((err)=>{
+    if (err.response.status===401){
+      setAutorizacion(false)
+  }
       console.log(err)
   })}
   axios.get(`http://localhost:8000/api/roles/${id}/allRoles`,{withCredentials: true})
   .then((res)=>{
       setRoles(res.data)
+      setAutorizacion(true)
   }).catch((err)=>{
+    if (err.response.status===401){
+      setAutorizacion(false)
+  }
       console.log(err)
   })
-},[id])
+},[id,empleado,autorizacion])
 const handleCheck = (e,rol,indexx)=>{
   console.log(rol,indexx)
   let nuevoArray = [...roles];
@@ -33,12 +43,12 @@ const handleCheck = (e,rol,indexx)=>{
   qui[0].rolstatus ? qui[0].rolstatus = false : qui[0].rolstatus =true; 
   nuevoArray[indexx]=qui[0];
   setRoles(nuevoArray);
-  axios.put(`http://localhost:8000/api/rol/${qui[0]._id}/edit`,qui[0])
+  axios.put(`http://localhost:8000/api/rol/${qui[0]._id}/edit`,qui[0],{withCredentials: true})
   .then(res=>{console.log(res)})
   .catch(err=>{console.log(err)})
 }
 
-  return ( <>
+  return ( <>{(autorizacion)?<>
     {(empleado!=="")?<>
     <div className='navbar-home fourth-color'>
         <div className="d-flex flex-row">
@@ -89,7 +99,7 @@ const handleCheck = (e,rol,indexx)=>{
     </>
     
     
-    : ""}</>
+    : ""}</> : <Sinpermiso/> }</>
   )
 }
 

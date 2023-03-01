@@ -4,7 +4,7 @@ const BorrarEmpleado = (props) => {
     const {iden, successCallback}= props;
 
     const handleDelete= ()=>{
-        axios.delete(`http://localhost:8000/api/empleado/${iden}/delete`)
+        axios.delete(`http://localhost:8000/api/empleado/${iden}/delete`,{withCredentials: true})
         .then(res=>{
             console.log(res.data);
             successCallback()})

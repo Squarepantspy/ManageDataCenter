@@ -21,6 +21,8 @@ require('./config/mongoose.config')
 //middleware para consultas post
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
+//middleware que agrega cookies a la solicitud
+app.use(cookieParser())
 
 
 //conexion al front end

@@ -5,7 +5,8 @@ const Logout = ({tipo}) => {
     const navigate = useNavigate();
 
     const handleClick = ()=>{
-        axios.get(`http://localhost:8000/logout/${tipo}`)
+
+        axios.get(`http://localhost:8000/logout/${tipo}`,{withCredentials: true})
         .then(res=>{
             console.log(res)
             navigate('/')

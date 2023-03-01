@@ -4,7 +4,7 @@ const BorrarRol = (props) => {
     const {iden, successCallback}= props;
 
     const handleDelete=()=>{
-        axios.delete(`http://localhost:8000/api/rol/${iden}/delete`)
+        axios.delete(`http://localhost:8000/api/rol/${iden}/delete`,{withCredentials: true})
         .then(res=>{
             console.log(res.data);
             successCallback()})

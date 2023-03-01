@@ -4,26 +4,37 @@ import {useParams, useNavigate} from 'react-router-dom';
 import axios from 'axios'
 import BorrarRol from './BorrarRol';
 import Button from './Button';
+import Sinpermiso from './Sinpermiso';
 const Roles = () => {
     const [roles, setRoles]=useState([])
     const [rol,setRol]=useState("")
     const [empleado, setEmpleado]=useState("")
     const {id}= useParams();
+    const [autorizacion,setAutorizacion]=useState(false)
 useEffect(()=>{
-    axios.get(`http://localhost:8000/api/empleado/${id}`)
+    axios.get(`http://localhost:8000/api/empleado/${id}`,{withCredentials: true})
     .then(res=>{
         console.log(res)
         setEmpleado(res.data)
+        setAutorizacion(true)
     })
     .catch(err=>{
         console.log(err)
+        if (err.response.status===401){
+            setAutorizacion(false)
+        }
     })
-    axios.get(`http://localhost:8000/api/roles/${id}/allRoles`)
+    axios.get(`http://localhost:8000/api/roles/${id}/allRoles`,{withCredentials: true})
     .then(res=>{
         setRoles(res.data)
+        setAutorizacion(true)
+        
     })
     .catch(err=>{
         console.log(err)
+        if (err.response.status===401){
+            setAutorizacion(false)
+        }
     })
 },[])
 
@@ -35,7 +46,7 @@ const submitHandler =(e)=>{
     axios.post(`http://localhost:8000/api/roles/${id}/newRol`,{
         rol : rol,
         rolstatus : false
-    })
+    },{withCredentials: true})
     .then(res=>{
         console.log(res.data)
         setRoles(oldarray=>[...oldarray,{_id: res.data._id,rol : res.data.rol, rolstatus : res.data.rolstatus }])
@@ -47,13 +58,14 @@ const submitHandler =(e)=>{
 }
 
 
-  return (
+  return ( <>{(autorizacion)?
     <div>
         <div className='navbar-home fourth-color'>
             <div className="d-flex flex-row">
                 <img src={serverimg} className= "logo" alt="esta es la imagen" />
                 <h2>Protect Data Center</h2>
             </div>
+            <Button ruta={`/empresa/${(empleado==="")? "" : empleado.createdBy._id}/main`} texto="Home"/>
         </div>
         <div className='container my-3'>
             <h3 className='text-center mb-3'>Lista de Roles de {empleado.firstName} {empleado.lastName} </h3>
@@ -86,7 +98,7 @@ const submitHandler =(e)=>{
             })
             }
         </div>
-    </div>
+    </div> : <Sinpermiso/> }</>
   )
 }
 

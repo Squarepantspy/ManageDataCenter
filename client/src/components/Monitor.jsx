@@ -7,6 +7,7 @@ import rack from '../static/img/rack-removebg-preview.png'
 import data_center from '../static/img/data-center.png'
 import Button from './Button';
 import Logout from './Logout';
+import Sinpermiso from './Sinpermiso';
 const socket = io(':8000')
 
 const Monitor = () => {
@@ -16,6 +17,7 @@ const Monitor = () => {
   const [empleado, setEmpleado]=useState("")
   const [sensor1,setSensor1]=useState("")
   const [sensor2,setSensor2]=useState("")
+  const [autorizacion,setAutorizacion]=useState(false)
 
   useEffect(()=>{
     //socket.disconnect()
@@ -40,20 +42,24 @@ useEffect(()=>{
     .then((res)=>{
         console.log(res)
         setEmpleado(res.data)
+        setAutorizacion(true)
       
     }).catch((err)=>{
+      if (err.response.status===401){
+        setAutorizacion(false)
+    }
         console.log(err)
     })}
     //return ()=> {socket.disconnect()
     //};
-},[id])
+},[id,autorizacion])
 
   
 /* socket.on('sensor2', (data2)=>{
     console.log("Los datos del sensor 2 son :", data2)
 }) */
 
-  return (
+  return ( <>{(autorizacion)?
      <>{(empleado!=="")?
     <div>
       
@@ -111,7 +117,7 @@ useEffect(()=>{
         </div>
         </div>
       </div></div>
-    </div>:""}</>
+    </div>:""}</> : <Sinpermiso/> }</>
   )
 }
 

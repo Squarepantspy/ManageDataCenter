@@ -5,10 +5,12 @@ import serverimg from '../static/img/servers.jpg'
 import Button from './Button'
 import BorrarEmpleado from './BorrarEmpleado';
 import Logout from './Logout';
+import Sinpermiso from './Sinpermiso';
 const MainEmpresa = () => {
     const [empresa,setEmpresa]=useState("")
     const [empleados,setEmpleados]=useState([])
     const {id}= useParams();
+    const [autorizacion,setAutorizacion]=useState(true)
 
     const removefromDom =(iden)=>{
         setEmpleados(empleados.filter((emp,index)=>emp._id!==iden))
@@ -20,21 +22,28 @@ useEffect(()=>{
         axios.get(`http://localhost:8000/api/empresa/${id}`,{withCredentials: true})
         .then((res)=>{
             setEmpresa(res.data)
+            setAutorizacion(true)
         }).catch((err)=>{
+            if (err.response.status===401){
+                setAutorizacion(false)
+            }
             console.log(err)
         })
     }
-    
         axios.get(`http://localhost:8000/api/${id}/allEmployess`,{withCredentials: true})
         .then(res=>{
             setEmpleados(res.data)
+            setAutorizacion(true)
         })
         .catch(err=>{
+            if (err.response.status===401){
+                setAutorizacion(false)
+            }
             console.log(err)
         })
     
 },[id])
-  return (
+  return ( <>{(autorizacion)?
     <>
     <div className='navbar-home fourth-color'>
         <div className="d-flex flex-row">
@@ -67,7 +76,7 @@ useEffect(()=>{
                 </div>)
     })}
     </div>
-    </>
+    </> : <Sinpermiso/> }</>
   )
 }
 

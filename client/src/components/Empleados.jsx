@@ -4,31 +4,36 @@ import axios from 'axios';
 import serverimg from '../static/img/servers.jpg'
 import Button from './Button';
 import Logout from './Logout';
+import Sinpermiso from './Sinpermiso';
 const Empleados = () => {
 const [empresaid,setempresaid]=useState("")
 const [empresaname,setEmpresaname]=useState("")
 const [empleados,setEmpleados]=useState([])
-const [estado, setEstado]=useState(false)
+const [autorizacion, setAutorizacion]=useState(false)
 const {id}=useParams();
 
 
 useEffect(()=>{
-    axios.get(`http://localhost:8000/api/empleado/${id}`)
+    axios.get(`http://localhost:8000/api/empleado/${id}`,{withCredentials: true})
     .then(res=>{
         setempresaid(res.data.createdBy._id)
         setEmpresaname(res.data.createdBy.name)
+        setAutorizacion(true)
     })
     .catch(err=>{
         console.log(err)
+        setAutorizacion(false)
     })
     if(empresaid !== ""){
     axios.get(`http://localhost:8000/api/${empresaid}/allEmployess`,{withCredentials: true})
         .then(res=>{
             console.log(res)
             setEmpleados(res.data.filter((emp,index)=>emp._id!==id))
+            setAutorizacion(true)
         })
         .catch(err=>{
             console.log(err)
+            setAutorizacion(false)
         })}
 },[id,empresaid])
 const handleLike = (e,emp,indexx)=>{
@@ -38,12 +43,15 @@ const handleLike = (e,emp,indexx)=>{
   qui[0].likes = qui[0].likes + 1;
   nuevoArray[indexx]=qui[0];
   setEmpleados(nuevoArray);
-  axios.put(`http://localhost:8000/api/${qui[0]._id}/editEmployee`,qui[0])
-  .then(res=>{console.log(res)})
-  .catch(err=>{console.log(err)})
+  axios.put(`http://localhost:8000/api/${qui[0]._id}/editEmployee`,qui[0],{withCredentials: true})
+  .then(res=>{console.log(res)
+    setAutorizacion(true)})
+  .catch(err=>{console.log(err)
+    setAutorizacion(false)
+  })
 }
 
-  return (<>
+  return (<>{(autorizacion)?<>
     <div><div className='navbar-home fourth-color'>
     <div className="d-flex flex-row">
     <img src={serverimg} className= "logo" alt="esta es la imagen" />
@@ -87,7 +95,7 @@ const handleLike = (e,emp,indexx)=>{
     })}
     </div>
 
-</>
+</> : <Sinpermiso/> }</>
   )
 }
 

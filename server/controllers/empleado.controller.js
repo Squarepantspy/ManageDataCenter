@@ -37,6 +37,7 @@ const newEmployee = (req,res)=>{
 }
 
 const allEmployees= (req,res)=>{
+    console.log("entro para obtener todas los empleados")
     const Empresa_id = req.params._id;
     Empleado.find({
         createdBy : {

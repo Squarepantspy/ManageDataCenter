@@ -9,7 +9,7 @@ const Mimapa = (props) => {
     })
 
     const { isLoaded } = useLoadScript({
-        googleMapsApiKey: "AIzaSyC6hSlDylr3EQY9tYSqGi1YlfTSjSbCHVA"
+        googleMapsApiKey: ""
       });
     const center = useMemo(()=>({lat: -25, lng: -57.7}),[]);// para evitar que re-renderice el centro del map
       

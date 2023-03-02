@@ -4,7 +4,7 @@ import { Link, useParams } from 'react-router-dom'
 import axios from 'axios';
 import Logout from './Logout';
 import Sinpermiso from './Sinpermiso';
-import Noexiste from './Noexiste';
+//import Noexiste from './Noexiste';
 const MainEmpleado = () => {
 const {id}= useParams();
 const [roles,setRoles]=useState([]);
@@ -14,16 +14,16 @@ useEffect(()=>{
   if(empleado===""){
   axios.get(`http://localhost:8000/api/empleado/${id}`,{withCredentials: true})
   .then((res)=>{
-      console.log(res.data.message.name)
+      console.log(res)
       
       setEmpleado(res.data)
       setAutorizacion(true)
     
     
   }).catch((err)=>{
-    if (err.response.status===401){
+     if (err.response.status===401){
       setAutorizacion(false)
-  }
+  } 
       console.log(err)
   })}
   axios.get(`http://localhost:8000/api/roles/${id}/allRoles`,{withCredentials: true})
